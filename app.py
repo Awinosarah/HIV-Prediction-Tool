@@ -10,9 +10,9 @@ import os
 # ============================================================
 # FIX: Set correct base directory for model files
 # ============================================================
-BASE_DIR = os.path.expanduser("~/Desktop/HIV_Prediction_Tool")
-MODEL_PATH = os.path.join(BASE_DIR, 'final_best_model.pkl')
-CONFIG_PATH = os.path.join(BASE_DIR, 'model_config.pkl')
+
+model_path = 'final_best_model.pkl'
+config_path = 'model_config.pkl'
 
 # Page configuration
 st.set_page_config(
