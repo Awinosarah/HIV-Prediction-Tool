@@ -8,9 +8,8 @@ from datetime import datetime
 import os
 
 # ============================================================
-# FIX: Set correct base directory for model files
+# Model file paths
 # ============================================================
-
 model_path = 'final_best_model.pkl'
 config_path = 'model_config.pkl'
 
@@ -58,26 +57,24 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Load model and configuration with FIXED PATHS
+# Load model and configuration
 @st.cache_resource
 def load_model_and_config():
-    """Load the trained model and configuration from correct directory"""
+    """Load the trained model and configuration"""
     try:
-        with open(MODEL_PATH, 'rb') as f:
+        with open(model_path, 'rb') as f:
             model = pickle.load(f)
-        with open(CONFIG_PATH, 'rb') as f:
+        with open(config_path, 'rb') as f:
             config = pickle.load(f)
-        st.success(f"✅ Model loaded successfully from: {BASE_DIR}")
+        st.success("✅ Model loaded successfully!")
         return model, config
     except FileNotFoundError as e:
         st.error(f"""
         ⚠️ Model files not found!
         
-        Looking for files at:
-        - {MODEL_PATH}
-        - {CONFIG_PATH}
-        
-        Please ensure the files exist in: {BASE_DIR}
+        Looking for files:
+        - {model_path}
+        - {config_path}
         
         Error: {str(e)}
         """)
@@ -94,7 +91,7 @@ st.markdown('<p style="text-align: center; font-size: 1.1rem; color: #555;">Kawo
 
 # Sidebar
 with st.sidebar:
-    st.image("https://via.placeholder.com/300x100/1f77b4/ffffff?text=Kawolo+Hospital", use_container_width=True)
+    st.image("https://via.placeholder.com/300x100/1f77b4/ffffff?text=Kawolo+Hospital", use_column_width=True)
     st.markdown("### About This Tool")
     st.info("""
     This tool uses machine learning to predict the risk of HIV viral load non-suppression 
@@ -117,9 +114,9 @@ with st.sidebar:
     st.markdown("**Developed by:** Research Team")
     st.markdown("**Institution:** Kawolo Hospital, Uganda")
     
-    # Debug info (can be removed in production)
+    # Debug info
     with st.expander("🔧 Debug Info"):
-        st.code(f"Base Dir: {BASE_DIR}\nModel exists: {os.path.exists(MODEL_PATH)}\nConfig exists: {os.path.exists(CONFIG_PATH)}")
+        st.code(f"Model exists: {os.path.exists(model_path)}\nConfig exists: {os.path.exists(config_path)}")
 
 # Main content tabs
 tab1, tab2, tab3, tab4 = st.tabs(["🔮 Prediction", "📊 Model Performance", "📖 Feature Guide", "ℹ️ About"])
@@ -129,7 +126,7 @@ with tab1:
     
     if model is None:
         st.error("⚠️ Model not loaded. Cannot make predictions.")
-        st.info(f"Please ensure model files exist in: {BASE_DIR}")
+        st.info("Please ensure model files exist in the repository root directory")
     else:
         # Create input form
         with st.form("prediction_form"):
